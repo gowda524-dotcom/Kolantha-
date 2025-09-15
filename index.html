@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="ta">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Birthday Surprise 🎉</title>
 
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@500&display=swap" rel="stylesheet" />
 
   <style>
     * {
@@ -15,7 +15,7 @@
       box-sizing: border-box;
     }
 
-    body, html {
+    html, body {
       height: 100%;
       width: 100%;
       font-family: 'Quicksand', sans-serif;
@@ -28,70 +28,65 @@
 
     .container {
       background: rgba(255, 255, 255, 0.95);
-      border-radius: 20px;
-      padding: 2.5rem 1.5rem;
-      width: 90%;
-      max-width: 420px;
+      border-radius: 24px;
+      padding: 3rem 2rem;
+      width: 92%;
+      max-width: 480px;
       text-align: center;
-      box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
-      animation: floatUp 1s ease-out;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      animation: fadeIn 0.8s ease-in-out;
     }
 
-    @keyframes floatUp {
-      0% {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
     }
 
     h1 {
       font-family: 'Pacifico', cursive;
-      font-size: 2rem;
-      color: #ff66cc;
-      margin-bottom: 1rem;
+      font-size: 2.2rem;
+      color: #ff33aa;
+      margin-bottom: 1.5rem;
     }
 
     p {
-      font-size: 1rem;
-      color: #444;
-      margin: 0.8rem 0;
+      font-size: 1.25rem;
+      color: #333;
+      margin: 1rem 0;
+      line-height: 1.6;
     }
 
     select, button {
-      font-size: 1rem;
-      padding: 0.7rem;
-      margin-top: 1rem;
+      font-size: 1.2rem;
+      padding: 1rem;
+      margin-top: 1.5rem;
       width: 100%;
-      border-radius: 12px;
+      border-radius: 14px;
       border: 2px solid #ff66cc;
       outline: none;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
 
     select {
       background-color: #fff;
-      color: #333;
+      color: #222;
     }
 
     button {
       background-color: #ff66cc;
       color: white;
       font-weight: bold;
-      margin-top: 1.5rem;
-      transition: all 0.3s;
+      transition: 0.3s ease;
     }
 
     button:hover {
       background-color: #ff3399;
-      transform: scale(1.03);
+      transform: scale(1.02);
     }
 
     .error {
       color: #cc0000;
-      font-size: 0.95rem;
+      font-size: 1.1rem;
       margin-top: 1rem;
     }
 
@@ -109,12 +104,12 @@
   <canvas id="confetti-canvas"></canvas>
 
   <div class="container">
-    <h1>💙 A Little Surprise for Sweetest Bestfriend 💙😚</h1>
-    <p>Hey my precious human! 💫<br>
-    This isn’t just any page — it's the beginning of something special... 🥰<br>
+    <h1>💙 A Little Surprise for My Sweetest Bestfriend 💙😚</h1>
+    <p> My precious Soul! 💫<br>
+    This isn’t just any page — it's the beginning of something special for my Special one😚🤗... <br>
     Ready to unlock your surprise journey?</p>
 
-    <p><strong>Question:</strong><br> Namma 1st meet panna place adhu??</p>
+    <p><strong>Question:</strong><br> Namma 1st meet panna place adhu🤔??</p>
     <p><em>(Hint: school, college, bus stop)</em></p>
 
     <select id="answer">
@@ -129,8 +124,9 @@
     <p id="error" class="error"></p>
   </div>
 
-  <!-- Confetti -->
+  <!-- Confetti Script -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
   <script>
     function checkAnswer() {
       const answer = document.getElementById("answer").value.toLowerCase();
@@ -144,7 +140,7 @@
         });
 
         setTimeout(() => {
-          window.location.href = "page1.html"; // Redirect to quiz page 1
+          window.location.href = "page1.html"; // Link to next page
         }, 1200);
       } else if (answer === "") {
         error.textContent = "Please choose an answer 🧐";
