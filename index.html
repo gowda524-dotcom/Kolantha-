@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Birthday Surprise 🎉</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-image: url('https://i.imgur.com/U2zPlGG.jpg'); /* Replace with hugging pandas background */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      color: #fff;
+      text-align: center;
+      padding: 2rem;
+      backdrop-filter: brightness(0.6);
+    }
+    .container {
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 500px;
+      margin: auto;
+    }
+    h1 {
+      font-size: 2em;
+      color: #ffccff;
+    }
+    p {
+      font-size: 1.2em;
+      margin-bottom: 1.5rem;
+    }
+    select, button {
+      font-size: 1em;
+      padding: 0.5em;
+      margin-top: 1em;
+      border-radius: 8px;
+      border: none;
+    }
+    button {
+      background-color: #ff66cc;
+      color: white;
+      cursor: pointer;
+    }
+    .error {
+      color: #ff9999;
+      margin-top: 1em;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>💙 A little Surprise for Sweetest Bestfriend 💙😚</h1>
+    <p>Heyyyy my precious one! 💫<br>
+    I’ve made something super special for you. A small journey filled with love, fun, and nostalgia! 🥹💖<br>
+    But wait — you gotta unlock it first! 😉</p>
+
+    <p><strong>Question:</strong><br> Namma 1st meet panna place adhu??</p>
+    <p>(Hint: school, college, bus stop)</p>
+
+    <select id="answer">
+      <option value="">-- Choose an answer --</option>
+      <option value="school">School</option>
+      <option value="college">College</option>
+      <option value="bus stop">Bus stop</option>
+    </select>
+    <br>
+    <button onclick="checkAnswer()">Unlock Surprise 🎁</button>
+    <p id="error" class="error"></p>
+  </div>
+
+  <script>
+    function checkAnswer() {
+      const answer = document.getElementById("answer").value.toLowerCase();
+      const error = document.getElementById("error");
+
+      if (answer === "college") {
+        window.location.href = "page1.html"; // Link to first quiz page
+      } else if (answer === "") {
+        error.textContent = "Please choose an answer 🧐";
+      } else {
+        error.textContent = "Oops! That's not it. Try again 🥺";
+      }
+    }
+  </script>
+</body>
+</html>
