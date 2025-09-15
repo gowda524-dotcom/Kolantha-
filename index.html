@@ -9,51 +9,65 @@
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
 
   <style>
-    body {
-      font-family: 'Quicksand', sans-serif;
-      background-image: url('https://i.imgur.com/U2zPlGG.jpg'); /* Hugging pandas */
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
+    * {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      height: 100%;
+      width: 100%;
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(135deg, #ffb6f9, #ffd6ff, #e0c3fc);
       display: flex;
-      justify-content: center;
       align-items: center;
-      min-height: 100vh;
+      justify-content: center;
+      overflow: hidden;
     }
 
     .container {
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(255, 255, 255, 0.95);
       border-radius: 20px;
-      padding: 2rem 1.2rem;
+      padding: 2.5rem 1.5rem;
       width: 90%;
       max-width: 420px;
       text-align: center;
-      color: #fff;
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+      box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
+      animation: floatUp 1s ease-out;
+    }
+
+    @keyframes floatUp {
+      0% {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     h1 {
       font-family: 'Pacifico', cursive;
       font-size: 2rem;
-      color: #ffccff;
+      color: #ff66cc;
       margin-bottom: 1rem;
     }
 
     p {
-      font-size: 1.05rem;
+      font-size: 1rem;
+      color: #444;
       margin: 0.8rem 0;
-      line-height: 1.5;
     }
 
     select, button {
       font-size: 1rem;
-      padding: 0.6rem;
+      padding: 0.7rem;
       margin-top: 1rem;
       width: 100%;
-      border-radius: 10px;
-      border: none;
+      border-radius: 12px;
+      border: 2px solid #ff66cc;
       outline: none;
     }
 
@@ -67,16 +81,16 @@
       color: white;
       font-weight: bold;
       margin-top: 1.5rem;
-      transition: background 0.3s;
+      transition: all 0.3s;
     }
 
     button:hover {
       background-color: #ff3399;
-      transform: scale(1.02);
+      transform: scale(1.03);
     }
 
     .error {
-      color: #ff9999;
+      color: #cc0000;
       font-size: 0.95rem;
       margin-top: 1rem;
     }
@@ -86,6 +100,7 @@
       top: 0;
       left: 0;
       pointer-events: none;
+      z-index: 10;
     }
   </style>
 </head>
@@ -94,11 +109,10 @@
   <canvas id="confetti-canvas"></canvas>
 
   <div class="container">
-    <h1>💙 A little Surprise for Sweetest Bestfriend 💙😚</h1>
-    <p>Heyyyy my precious one! 💫<br>
-    I’ve made something super special for you.<br>
-    A small journey filled with love, fun, and nostalgia! 🥹💖<br>
-    But wait — you gotta unlock it first! 😉</p>
+    <h1>💙 A Little Surprise for Sweetest Bestfriend 💙😚</h1>
+    <p>Hey my precious human! 💫<br>
+    This isn’t just any page — it's the beginning of something special... 🥰<br>
+    Ready to unlock your surprise journey?</p>
 
     <p><strong>Question:</strong><br> Namma 1st meet panna place adhu??</p>
     <p><em>(Hint: school, college, bus stop)</em></p>
@@ -115,27 +129,23 @@
     <p id="error" class="error"></p>
   </div>
 
-  <!-- Confetti Script -->
+  <!-- Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-
   <script>
     function checkAnswer() {
       const answer = document.getElementById("answer").value.toLowerCase();
       const error = document.getElementById("error");
 
       if (answer === "college") {
-        // Confetti blast
         confetti({
           particleCount: 120,
-          spread: 70,
+          spread: 90,
           origin: { y: 0.6 }
         });
 
-        // Delay redirect so user sees confetti
         setTimeout(() => {
-          window.location.href = "page1.html"; // Next page
+          window.location.href = "page1.html"; // Redirect to quiz page 1
         }, 1200);
-
       } else if (answer === "") {
         error.textContent = "Please choose an answer 🧐";
       } else {
@@ -143,6 +153,5 @@
       }
     }
   </script>
-
 </body>
 </html>
