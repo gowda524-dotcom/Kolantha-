@@ -37,9 +37,9 @@
             padding-top: 20px;
         }
 
-        /* --- Header & Countdown --- */
+        /* --- Header Text --- */
         .header-titles {
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .main-title {
@@ -50,65 +50,58 @@
             margin: 10px 0 5px;
         }
         
-        #countdown-wrapper {
-            margin-bottom: 15px;
-        }
-
-        #countdown {
-            font-size: 2.5em;
+        .subtitle-text {
+            /* Replacing the countdown text */
+            font-size: 2.0em;
             font-weight: bold;
-            color: #f0f; /* Hot Pink/Magenta for visibility */
+            color: #f0f;
             text-shadow: 2px 2px 3px rgba(0,0,0,0.7);
-            display: block; 
-        }
-        
-        #days-to-text {
-            font-size: 1.5em;
-            color: #eee;
-            font-weight: 500;
+            margin-top: 10px;
         }
 
-        /* --- Horizontal 3D Carousel Container --- */
+        /* --- Slideshow Container (2D Fix) --- */
         #carousel-container {
+            width: 85vw;
+            max-width: 500px; 
+            height: 350px; 
             position: relative;
-            perspective: 1000px; /* Gives the 3D depth */
-            width: 80vw;
-            max-width: 600px;
-            height: 300px; 
-            margin: 40px auto;
+            margin: 30px auto;
+            border: 10px solid white;
+            border-radius: 15px;
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.8);
+            overflow: hidden;
+            background-color: #333;
         }
 
-        .carousel-wrapper {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            transform-style: preserve-3d;
-            animation: rotateCarousel 30s infinite cubic-bezier(0.5, 0, 0.5, 1);
-        }
-        
         .carousel-slide {
             position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out; /* Slow fade transition */
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
-            border: 5px solid white;
-            /* **FIX: Removed box-shadow to eliminate white lines** */
+        }
+
+        .carousel-slide.active {
+            opacity: 1;
         }
 
         .carousel-slide img {
             max-width: 100%;
             max-height: 100%;
-            object-fit: contain; 
-            display: block;
+            width: auto;
+            height: auto;
+            object-fit: contain; /* **FIX: Ensures no cropping** */
+            animation: subtleRotate 15s linear infinite; /* Gentle rotation effect */
         }
-
-        /* Keyframes for the 6-slide rotation */
-        @keyframes rotateCarousel {
-            0% { transform: translateZ(-300px) rotateY(0deg); }
-            100% { transform: translateZ(-300px) rotateY(-360deg); }
+        
+        @keyframes subtleRotate {
+            0% { transform: rotateZ(0deg); }
+            100% { transform: rotateZ(360deg); }
         }
 
         /* --- Quiz Area --- */
@@ -161,8 +154,8 @@
             transition: background-color 0.3s;
         }
         
-        /* --- Grand Effects CSS --- */
-        .floating-emoji, .confetti-fall, .firework-spark {
+        /* --- Grand Effects CSS (Unchanged) --- */
+        .floating-emoji, .confetti-fall {
             position: fixed; 
             pointer-events: none;
             z-index: 1; 
@@ -198,15 +191,11 @@
         <div class="header-titles">
             <h1 class="main-title">Advance Happy Birthday My Bestest Friend Forever 💙🫂😚</h1>
             
-            <div id="countdown-wrapper">
-                <p id="days-to-text"></p> <span id="countdown">Loading Countdown...</span>
-            </div>
+            <p class="subtitle-text">6 Days to 🤗</p>
         </div>
         
         <div id="carousel-container">
-            <div class="carousel-wrapper" id="carouselWrapper">
-                </div>
-        </div>
+            </div>
 
         <div id="quizContainer">
             <p class="quiz-question">Ni Ennaku eppovume Special tha loosuu🤗...Lov uuu my friend 😚❤️‍🩹 Oru hug kudu 🫂 next page ku pola Anga na unaku hug tharuvaa.</p>
@@ -220,17 +209,18 @@
             const body = document.body;
             const music = document.getElementById('bgMusic');
             const musicTrigger = document.getElementById('music-trigger');
-            const countdownElement = document.getElementById('countdown');
-            const daysToTextElement = document.getElementById('days-to-text');
+            const carouselContainer = document.getElementById('carousel-container');
             const quizContainer = document.getElementById('quizContainer');
             const submitAnswer = document.getElementById('submitAnswer');
-            const carouselWrapper = document.getElementById('carouselWrapper');
 
             const QUIZ_DELAY = 30000; // 30 seconds
-            const NUM_IMAGES = 6;
-            const imagesData = Array.from({ length: NUM_IMAGES }, (_, i) => `A${i + 1}.jpg`);
+            const SLIDE_DURATION = 4000; // 4 seconds per slide
+            let currentSlideIndex = 0;
+            let slideshowInterval;
 
-            // --- 1. Music Autoplay Fix (Guaranteed start on first touch) ---
+            const imagesData = ['A1.jpg', 'A2.jpg', 'A3.jpg', 'A4.jpg', 'A5.jpg', 'A6.jpg'];
+            
+            // --- 1. Music Autoplay Fix ---
             musicTrigger.addEventListener('click', () => {
                 if (music.paused) {
                     music.volume = 0.8; 
@@ -239,105 +229,76 @@
                 musicTrigger.style.display = 'none'; 
             }, { once: true }); 
             
-            // Auto-attempt to start the music silenced, as a backup
             music.volume = 0; 
             music.play().then(() => {
-                setTimeout(() => {
-                    music.volume = 0.8; 
-                }, 500); 
+                setTimeout(() => { music.volume = 0.8; }, 500); 
                 musicTrigger.style.display = 'none';
             }).catch(e => {
                 console.log("Music blocked. Click anywhere to start.");
             });
 
 
-            // --- 2. Countdown Timer Logic ---
-            function getTargetDateForOctober7th() {
-                const now = new Date();
-                let targetYear = now.getFullYear();
-                const targetMonth = 9; // October is month 9 (0-indexed)
-                const targetDay = 7;
-
-                // If October 7th has already passed this year, set it for next year
-                if (now.getMonth() > targetMonth || (now.getMonth() === targetMonth && now.getDate() > targetDay)) {
-                    targetYear++;
-                }
-
-                return new Date(targetYear, targetMonth, targetDay, 0, 0, 0).getTime();
-            }
-
-            let targetDate = getTargetDateForOctober7th();
-
-            function updateCountdown() {
-                const now = new Date().getTime();
-                const distance = targetDate - now;
-
-                if (distance < 0) {
-                    // It's the birthday!
-                    countdownElement.innerHTML = "IT'S HER BIRTHDAY! 🎂";
-                    daysToTextElement.innerHTML = "Happy Birthday! 🎉";
-                    clearInterval(countdownInterval);
-                    return;
-                }
-
-                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-                // **FIX: Dynamically update "Days to" text**
-                if (days > 0) {
-                    daysToTextElement.innerHTML = `${days} Day${days > 1 ? 's' : ''} to 🤗`;
-                } else if (hours > 0 || minutes > 0 || seconds > 0) {
-                    daysToTextElement.innerHTML = `Less than a day to 🤗`;
-                } else {
-                    daysToTextElement.innerHTML = `Almost there! 🤗`;
-                }
-
-                countdownElement.innerHTML = `${hours}H ${minutes}M ${seconds}S`;
-            }
-
-            const countdownInterval = setInterval(updateCountdown, 1000);
-            updateCountdown(); 
-            
-            // --- 3. Carousel Setup (Horizontal 3D) ---
-            function setupCarousel() {
-                const radius = Math.round(300 / (2 * Math.tan(Math.PI / NUM_IMAGES))); 
-                
-                imagesData.forEach((file, index) => {
-                    const slide = document.createElement('div');
-                    slide.classList.add('carousel-slide');
+            // --- 2. Slideshow Setup (2D Fix) ---
+            function createSlides() {
+                imagesData.forEach((file) => {
+                    const slideDiv = document.createElement('div');
+                    slideDiv.classList.add('carousel-slide');
                     
                     const img = document.createElement('img');
                     img.src = file;
-                    img.alt = `Photo ${index + 1}`;
+                    img.alt = `Photo`;
                     
-                    const angle = index * (360 / NUM_IMAGES);
-                    slide.style.transform = `rotateY(${angle}deg) translateZ(${radius}px)`;
-                    
-                    slide.appendChild(img);
-                    carouselWrapper.appendChild(slide);
+                    slideDiv.appendChild(img);
+                    carouselContainer.appendChild(slideDiv);
                 });
-
-                carouselWrapper.style.transform = `translateZ(-${radius}px)`;
             }
-            setupCarousel();
 
-            // --- 4. Quiz Reveal Timer ---
+            function showSlide(index) {
+                const slides = document.querySelectorAll('.carousel-slide');
+                if (slides.length === 0) return;
+
+                slides.forEach(slide => slide.classList.remove('active'));
+                
+                const targetSlide = slides[index % slides.length];
+                if (targetSlide) {
+                    targetSlide.classList.add('active');
+                }
+            }
+            
+            function nextSlide() {
+                currentSlideIndex++;
+                showSlide(currentSlideIndex);
+            }
+            
+            function startSlideshow() {
+                createSlides();
+                showSlide(0);
+                slideshowInterval = setInterval(nextSlide, SLIDE_DURATION);
+            }
+
+            // Start the main attraction
+            startSlideshow();
+
+
+            // --- 3. Quiz Reveal Timer ---
             setTimeout(() => {
+                // Stop the slideshow when the quiz appears
+                clearInterval(slideshowInterval);
+
                 quizContainer.style.display = 'flex';
+                // Trigger animation 
                 setTimeout(() => quizContainer.classList.add('active'), 50); 
             }, QUIZ_DELAY);
 
 
-            // --- 5. Navigation ---
+            // --- 4. Navigation ---
             submitAnswer.addEventListener('click', () => {
                 if (music) music.pause();
                 window.location.href = 'page2.html'; 
             });
 
 
-            // --- 6. Grand Effects (Floating Emojis/Confetti) ---
+            // --- 5. Grand Effects ---
             const confettiColors = ['#f00', '#0f0', '#00f', '#ff0', '#f0f', '#fff', '#ffd700', '#FF5722', '#4CAF50', '#8A2BE2', '#FF1493'];
             const emojis = ['💖', '💕', '🥰', '😍', '✨', '🌟', '🎉', '🎈', '❤️', '😘', '👑', '🎂', '🥳', '🤩', '🫶', '🤗', '😚', '💙', '🫂', '🎊']; 
             
