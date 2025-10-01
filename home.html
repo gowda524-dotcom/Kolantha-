@@ -51,7 +51,6 @@
         }
         
         #countdown-wrapper {
-            /* Wrapper for the countdown and "6 Days to" text */
             margin-bottom: 15px;
         }
 
@@ -60,7 +59,7 @@
             font-weight: bold;
             color: #f0f; /* Hot Pink/Magenta for visibility */
             text-shadow: 2px 2px 3px rgba(0,0,0,0.7);
-            display: block; /* Ensures it takes its own line */
+            display: block; 
         }
         
         #days-to-text {
@@ -75,7 +74,7 @@
             perspective: 1000px; /* Gives the 3D depth */
             width: 80vw;
             max-width: 600px;
-            height: 300px; /* Height of the visible image */
+            height: 300px; 
             margin: 40px auto;
         }
 
@@ -96,13 +95,13 @@
             align-items: center;
             overflow: hidden;
             border: 5px solid white;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+            /* **FIX: Removed box-shadow to eliminate white lines** */
         }
 
         .carousel-slide img {
             max-width: 100%;
             max-height: 100%;
-            object-fit: contain; /* **FIX: Ensures no cropping** */
+            object-fit: contain; 
             display: block;
         }
 
@@ -200,8 +199,7 @@
             <h1 class="main-title">Advance Happy Birthday My Bestest Friend Forever 💙🫂😚</h1>
             
             <div id="countdown-wrapper">
-                <p id="days-to-text">6 Days to 🤗</p>
-                <span id="countdown">Loading Countdown...</span>
+                <p id="days-to-text"></p> <span id="countdown">Loading Countdown...</span>
             </div>
         </div>
         
@@ -254,36 +252,32 @@
 
 
             // --- 2. Countdown Timer Logic ---
-            // Set the target date to October 7th in the current year at midnight
-            const targetDate = new Date(new Date().getFullYear(), 9, 7, 0, 0, 0).getTime(); 
+            function getTargetDateForOctober7th() {
+                const now = new Date();
+                let targetYear = now.getFullYear();
+                const targetMonth = 9; // October is month 9 (0-indexed)
+                const targetDay = 7;
+
+                // If October 7th has already passed this year, set it for next year
+                if (now.getMonth() > targetMonth || (now.getMonth() === targetMonth && now.getDate() > targetDay)) {
+                    targetYear++;
+                }
+
+                return new Date(targetYear, targetMonth, targetDay, 0, 0, 0).getTime();
+            }
+
+            let targetDate = getTargetDateForOctober7th();
 
             function updateCountdown() {
                 const now = new Date().getTime();
-                let distance = targetDate - now;
+                const distance = targetDate - now;
 
-                // If the target date has passed, assume the next year.
                 if (distance < 0) {
-                    // Try next year's October 7th
-                    const nextYearTarget = new Date(new Date().getFullYear() + 1, 9, 7, 0, 0, 0).getTime();
-                    distance = nextYearTarget - now;
-
-                    // If it is the actual birthday (very close to 0 distance)
-                    if (distance > -(1000 * 60 * 60 * 24) && distance < 0) {
-                         countdownElement.innerHTML = "IT'S HER BIRTHDAY! 🎂";
-                         daysToTextElement.style.display = 'none';
-                         clearInterval(countdownInterval);
-                         return;
-                    }
-                    
-                    // If the date is still in the future (next year's date)
-                    if (distance > 0) {
-                        // Recalculate distance for the next year
-                    } else {
-                         // Should not happen, but for safety
-                         countdownElement.innerHTML = "DATE ERROR";
-                         clearInterval(countdownInterval);
-                         return;
-                    }
+                    // It's the birthday!
+                    countdownElement.innerHTML = "IT'S HER BIRTHDAY! 🎂";
+                    daysToTextElement.innerHTML = "Happy Birthday! 🎉";
+                    clearInterval(countdownInterval);
+                    return;
                 }
 
                 const days = Math.floor(distance / (1000 * 60 * 60 * 24));
@@ -291,8 +285,16 @@
                 const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-                countdownElement.innerHTML = `${days}D ${hours}H ${minutes}M ${seconds}S`;
-                daysToTextElement.innerHTML = `6 Days to 🤗`; // Keeping this text constant as requested
+                // **FIX: Dynamically update "Days to" text**
+                if (days > 0) {
+                    daysToTextElement.innerHTML = `${days} Day${days > 1 ? 's' : ''} to 🤗`;
+                } else if (hours > 0 || minutes > 0 || seconds > 0) {
+                    daysToTextElement.innerHTML = `Less than a day to 🤗`;
+                } else {
+                    daysToTextElement.innerHTML = `Almost there! 🤗`;
+                }
+
+                countdownElement.innerHTML = `${hours}H ${minutes}M ${seconds}S`;
             }
 
             const countdownInterval = setInterval(updateCountdown, 1000);
@@ -300,7 +302,6 @@
             
             // --- 3. Carousel Setup (Horizontal 3D) ---
             function setupCarousel() {
-                // Calculation for the radius to place slides in a circle
                 const radius = Math.round(300 / (2 * Math.tan(Math.PI / NUM_IMAGES))); 
                 
                 imagesData.forEach((file, index) => {
@@ -318,7 +319,6 @@
                     carouselWrapper.appendChild(slide);
                 });
 
-                // Set the wrapper origin to center the rotation
                 carouselWrapper.style.transform = `translateZ(-${radius}px)`;
             }
             setupCarousel();
@@ -326,14 +326,12 @@
             // --- 4. Quiz Reveal Timer ---
             setTimeout(() => {
                 quizContainer.style.display = 'flex';
-                // Trigger animation 
                 setTimeout(() => quizContainer.classList.add('active'), 50); 
             }, QUIZ_DELAY);
 
 
             // --- 5. Navigation ---
             submitAnswer.addEventListener('click', () => {
-                // Submit automatically moves to the next page
                 if (music) music.pause();
                 window.location.href = 'page2.html'; 
             });
