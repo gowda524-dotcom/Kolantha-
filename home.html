@@ -50,11 +50,23 @@
             margin: 10px 0 5px;
         }
         
+        #countdown-wrapper {
+            /* Wrapper for the countdown and "6 Days to" text */
+            margin-bottom: 15px;
+        }
+
         #countdown {
             font-size: 2.5em;
             font-weight: bold;
             color: #f0f; /* Hot Pink/Magenta for visibility */
             text-shadow: 2px 2px 3px rgba(0,0,0,0.7);
+            display: block; /* Ensures it takes its own line */
+        }
+        
+        #days-to-text {
+            font-size: 1.5em;
+            color: #eee;
+            font-weight: 500;
         }
 
         /* --- Horizontal 3D Carousel Container --- */
@@ -90,7 +102,7 @@
         .carousel-slide img {
             max-width: 100%;
             max-height: 100%;
-            object-fit: contain; /* Ensures no cropping */
+            object-fit: contain; /* **FIX: Ensures no cropping** */
             display: block;
         }
 
@@ -186,7 +198,11 @@
     <div class="content-overlay">
         <div class="header-titles">
             <h1 class="main-title">Advance Happy Birthday My Bestest Friend Forever 💙🫂😚</h1>
-            <p id="countdown">Loading Countdown...</p>
+            
+            <div id="countdown-wrapper">
+                <p id="days-to-text">6 Days to 🤗</p>
+                <span id="countdown">Loading Countdown...</span>
+            </div>
         </div>
         
         <div id="carousel-container">
@@ -207,6 +223,7 @@
             const music = document.getElementById('bgMusic');
             const musicTrigger = document.getElementById('music-trigger');
             const countdownElement = document.getElementById('countdown');
+            const daysToTextElement = document.getElementById('days-to-text');
             const quizContainer = document.getElementById('quizContainer');
             const submitAnswer = document.getElementById('submitAnswer');
             const carouselWrapper = document.getElementById('carouselWrapper');
@@ -221,7 +238,7 @@
                     music.volume = 0.8; 
                     music.play().catch(e => console.error("Music playback failed:", e));
                 }
-                musicTrigger.style.display = 'none'; // Hide the trigger once clicked
+                musicTrigger.style.display = 'none'; 
             }, { once: true }); 
             
             // Auto-attempt to start the music silenced, as a backup
@@ -232,22 +249,41 @@
                 }, 500); 
                 musicTrigger.style.display = 'none';
             }).catch(e => {
-                // If blocked, the user must click anywhere (the trigger) to start it.
                 console.log("Music blocked. Click anywhere to start.");
             });
 
 
             // --- 2. Countdown Timer Logic ---
-            const targetDate = new Date("October 7, 2024 00:00:00").getTime();
+            // Set the target date to October 7th in the current year at midnight
+            const targetDate = new Date(new Date().getFullYear(), 9, 7, 0, 0, 0).getTime(); 
 
             function updateCountdown() {
                 const now = new Date().getTime();
-                const distance = targetDate - now;
+                let distance = targetDate - now;
 
+                // If the target date has passed, assume the next year.
                 if (distance < 0) {
-                    countdownElement.innerHTML = "IT'S HER BIRTHDAY! 🎂";
-                    clearInterval(countdownInterval);
-                    return;
+                    // Try next year's October 7th
+                    const nextYearTarget = new Date(new Date().getFullYear() + 1, 9, 7, 0, 0, 0).getTime();
+                    distance = nextYearTarget - now;
+
+                    // If it is the actual birthday (very close to 0 distance)
+                    if (distance > -(1000 * 60 * 60 * 24) && distance < 0) {
+                         countdownElement.innerHTML = "IT'S HER BIRTHDAY! 🎂";
+                         daysToTextElement.style.display = 'none';
+                         clearInterval(countdownInterval);
+                         return;
+                    }
+                    
+                    // If the date is still in the future (next year's date)
+                    if (distance > 0) {
+                        // Recalculate distance for the next year
+                    } else {
+                         // Should not happen, but for safety
+                         countdownElement.innerHTML = "DATE ERROR";
+                         clearInterval(countdownInterval);
+                         return;
+                    }
                 }
 
                 const days = Math.floor(distance / (1000 * 60 * 60 * 24));
@@ -255,7 +291,8 @@
                 const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-                countdownElement.innerHTML = `${days}D ${hours}H ${minutes}M ${seconds}S to 🤗`;
+                countdownElement.innerHTML = `${days}D ${hours}H ${minutes}M ${seconds}S`;
+                daysToTextElement.innerHTML = `6 Days to 🤗`; // Keeping this text constant as requested
             }
 
             const countdownInterval = setInterval(updateCountdown, 1000);
@@ -263,7 +300,8 @@
             
             // --- 3. Carousel Setup (Horizontal 3D) ---
             function setupCarousel() {
-                const radius = Math.round(300 / (2 * Math.tan(Math.PI / NUM_IMAGES))); // Calculate radius
+                // Calculation for the radius to place slides in a circle
+                const radius = Math.round(300 / (2 * Math.tan(Math.PI / NUM_IMAGES))); 
                 
                 imagesData.forEach((file, index) => {
                     const slide = document.createElement('div');
