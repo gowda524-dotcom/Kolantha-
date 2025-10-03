@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday!</title>
+    <style>
+        /* --- CSS Styles --- */
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            overflow: hidden; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #000; 
+            position: relative;
+            color: #fff; 
+        }
+
+        .background-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* --- UPDATED: Image reference changed to Page2.jpg --- */
+            background-image: url('Page2.jpg'); 
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.7); 
+            z-index: -1; 
+        }
+
+        .content-overlay {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 20px;
+            max-width: 80%;
+        }
+
+        .top-emojis {
+            font-size: 2.5em; 
+            margin-bottom: 20px;
+            letter-spacing: 5px; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px; 
+            /* Push emojis up a bit */
+            margin-top: -100px; 
+        }
+        .top-emojis span {
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.7); 
+        }
+
+        h1 {
+            font-family: 'Brush Script MT', cursive; 
+            font-size: 4em; 
+            color: #ffe082; 
+            margin-top: 150px; 
+            margin-bottom: 0;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); 
+        }
+
+        .message-section {
+            margin-top: 20px;
+            color: #f8bbd0; 
+            font-size: 1.5em;
+            line-height: 1.4;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+        }
+
+        .main-quote {
+            font-weight: bold;
+            font-size: 1.7em;
+            color: #fff; 
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            font-style: italic;
+            color: #f48fb1; 
+        }
+
+        /* --- Quiz Box Styles --- */
+        #quiz-box {
+            display: none; 
+            margin-top: 40px;
+            padding: 25px;
+            background-color: rgba(255, 255, 255, 0.85); 
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            max-width: 400px;
+            width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+            color: #333; 
+        }
+
+        #quiz-question {
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: #e91e63; 
+        }
+
+        #quiz-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+
+        #quiz-input {
+            padding: 12px;
+            width: 80%;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1em;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        #quiz-submit {
+            padding: 12px 25px;
+            background-color: #ff4081; 
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        #quiz-submit:hover {
+            background-color: #e91e63; 
+            transform: translateY(-2px); 
+        }
+
+        #background-audio {
+            display: none; /* Keep audio element hidden */
+        }
+        
+        /* Social Icons have been removed */
+    </style>
+</head>
+<body>
+
+    <div class="background-image"></div>
+
+    <div class="content-overlay">
+        <div class="top-emojis">
+            <span>✨</span><span>🦋</span><span>😔</span><span>❤️</span><span>👫</span><span>🕊️</span>
+        </div>
+
+        <div class="message-section">
+            <p class="main-quote">" It's my favourite person birthday "</p>
+            <p class="subtitle">~ Happy birthday my dear sweetheart in advance ~<br>& I love youuuuh so much !</p>
+        </div>
+
+        <h1>Happy Birthday</h1>
+
+        <div id="quiz-box">
+            <div id="quiz-question">
+                En Kolanthaa Appovum Happy ya erukanum 🤗😚...Erupa thana loosu???
+            </div>
+            <form id="quiz-form">
+                <input type="text" id="quiz-input" placeholder="Type any text..." required>
+                <button type="submit" id="quiz-submit">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <audio id="background-audio" loop autoplay>
+        <source src="Page4.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        // --- JavaScript for Quiz Timing and Navigation ---
+        
+        const quizBox = document.getElementById('quiz-box');
+        const backgroundAudio = document.getElementById('background-audio');
+        
+        // --- UPDATED: Delay changed to 15 seconds (15,000 milliseconds) ---
+        const delayInMilliseconds = 15 * 1000; 
+
+        function showQuiz() {
+            quizBox.style.display = 'block';
+            console.log("Quiz has appeared after 15 seconds!");
+        }
+
+        // Timer to show the quiz after 15 seconds
+        setTimeout(showQuiz, delayInMilliseconds);
+
+        // Workaround for browser audio autoplay restrictions
+        document.body.addEventListener('click', () => {
+            if (backgroundAudio.paused) {
+                backgroundAudio.play().catch(e => console.log("Audio play prevented:", e));
+            }
+        }, { once: true }); 
+
+        // Quiz Form Submission Handler
+        const quizForm = document.getElementById('quiz-form');
+
+        quizForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+            
+            // Navigate to 'page4.html'
+            const next_page = "page4.html";
+            console.log(`Answer submitted. Navigating to ${next_page}...`);
+            window.location.href = next_page;
+        });
+
+    </script>
+
+</body>
+</html>
