@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page 4: Reveals & Celebration</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- Base & Celebration Styles --- */
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1a0033; /* Dark purple/blue background */
+            color: #fff;
+            overflow-x: hidden; /* Prevent horizontal scrolling */
+            text-align: center;
+            padding-bottom: 50px;
+        }
+
+        /* --- Header Text --- */
+        #header-text {
+            font-family: 'Luckiest Guy', cursive;
+            font-size: 3.5em;
+            color: #ffd700; /* Gold */
+            text-shadow: 4px 4px #ff69b4; /* Pink border/shadow */
+            padding: 20px 0;
+            margin: 20px auto;
+            max-width: 90%;
+            animation: pulse 1s infinite alternate;
+        }
+
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.05); }
+        }
+
+        /* --- Photo Grid & Item Styling --- */
+        #photo-grid {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .photo-container {
+            position: relative;
+            width: 720px; /* 720px width */
+            height: 720px; /* 720px height */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            overflow: hidden;
+            background-color: #222;
+        }
+
+        .photo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .image-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(255, 192, 203, 0.7); /* Semi-transparent pink */
+            color: #880e4f;
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 10px 0;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+            z-index: 5;
+        }
+
+        /* --- 1. EMOJI TAP REVEAL STYLES --- */
+        #reveal-1 .cover {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            overflow: hidden;
+            z-index: 10;
+        }
+        #reveal-1 .emoji {
+            width: 14.4%; /* Approx. 7x7 grid: 100/7 = 14.28%. Use 14.4 to ensure full cover */
+            height: 14.4%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2.5em;
+            background-color: #ffc0cb; /* Pink background for emojis */
+            border: 1px solid #f06292;
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.3s;
+        }
+        .emoji.revealed {
+            opacity: 0;
+            transform: scale(0.1);
+            pointer-events: none;
+        }
+        .emoji.fall {
+            transition: transform 1.5s ease-in, opacity 0.5s;
+            transform: translateY(100vh) rotate(720deg) scale(0.1);
+            pointer-events: none;
+        }
+
+
+        /* --- 2. SCRATCH REVEAL STYLES --- */
+        #reveal-2 .cover {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            cursor: grabbing;
+        }
+        #scratch-canvas {
+            background-color: #a0a0a0; /* Grey scratch coating */
+            touch-action: none; /* Prevents scrolling on touch devices */
+        }
+
+        /* --- 3. RIBBON WRAP REVEAL STYLES --- */
+        #reveal-3 .ribbon {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background-color: rgba(255, 255, 255, 0.9);
+            transition: opacity 1s;
+        }
+        #reveal-3 .ribbon-content {
+            background-color: #e57373; /* Light red */
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            font-size: 2em;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-30px);}
+            60% {transform: translateY(-15px);}
+        }
+        .ribbon.revealed {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+
+        /* --- Quiz Box Styles --- */
+        #final-quiz {
+            margin-top: 80px;
+            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 0 25px rgba(255, 105, 180, 0.8);
+            max-width: 500px;
+            width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+            color: #333;
+            display: none; /* Hidden until all photos are revealed */
+        }
+
+        #quiz-question {
+            font-size: 1.5em;
+            margin-bottom: 25px;
+            font-weight: bold;
+            color: #e91e63;
+        }
+
+        #quiz-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+
+        #quiz-input {
+            padding: 15px;
+            width: 80%;
+            border: 2px solid #ff4081;
+            border-radius: 10px;
+            font-size: 1.1em;
+        }
+
+        #quiz-submit {
+            padding: 12px 30px;
+            background-color: #ff4081;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        /* --- Celebration Styles (for visual effect) --- */
+        .confetti {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="play-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.95); color: white; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 200; font-size: 1.5em; cursor: pointer; text-shadow: 0 0 10px #ff69b4;">
+        <p>Tap to Enter the Celebration! 🥳</p>
+        <p style="font-size: 3em;">👇</p>
+    </div>
+
+    <audio id="background-audio" loop>
+        <source src="P4.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <h1 id="header-text">Advance Happy Birthday My Favourite Panda 😚🐼</h1>
+
+    <div id="confetti-container" class="confetti"></div>
+    <div id="fireworks-container" class="confetti"></div>
+
+
+    <div id="photo-grid">
+
+        <div id="reveal-1" class="photo-container">
+            <img src="P1.jpg" alt="Panda Image 1">
+            <div id="emoji-cover" class="cover">
+                </div>
+            <div class="image-caption">Ennoda Panda🐼</div>
+        </div>
+
+        <div id="reveal-2" class="photo-container">
+            <img src="P2.jpg" alt="Panda Image 2">
+            <div class="cover">
+                <canvas id="scratch-canvas" width="720" height="720"></canvas>
+            </div>
+            <div class="image-caption">Azhagu Kannam😚🙈</div>
+        </div>
+
+        <div id="reveal-3" class="photo-container">
+            <img src="P3.jpg" alt="Panda Image 3">
+            <div id="ribbon-cover" class="ribbon">
+                <div class="ribbon-content">
+                    Click the Gift! 🎁
+                </div>
+            </div>
+            <div class="image-caption">Cute panda🤗</div>
+        </div>
+
+    </div>
+    <div id="final-quiz">
+        <div id="quiz-question">Lov uuu 😚🫂 always panda 🐼</div>
+        <form id="quiz-form">
+            <input type="text" id="quiz-input" placeholder="Type anything you want..." required>
+            <button type="submit" id="quiz-submit">Submit & Continue</button>
+        </form>
+    </div>
+
+    <script>
+        // --- Global State and Counters ---
+        let revealedCount = 0;
+        const totalPhotos = 3;
+        const quizBox = document.getElementById('final-quiz');
+        const backgroundAudio = document.getElementById('background-audio');
+
+        // Function to check if all photos are revealed and show the quiz
+        function checkRevealComplete() {
+            revealedCount++;
+            if (revealedCount === totalPhotos) {
+                setTimeout(() => {
+                    quizBox.style.display = 'block';
+                    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                    // Heavy confetti blast after reveal
+                    createConfettiBlast(document.getElementById('confetti-container'));
+                }, 500);
+            }
+        }
+        
+        // --- Audio & Workaround Setup ---
+        const playOverlay = document.getElementById('play-overlay');
+        document.body.addEventListener('click', function startPage() {
+            backgroundAudio.play().catch(e => console.log("Audio play failed:", e));
+            playOverlay.style.opacity = '0';
+            setTimeout(() => { playOverlay.style.display = 'none'; }, 500);
+            document.body.removeEventListener('click', startPage);
+        }, { once: true });
+
+
+        /* ===================================================================
+           1. EMOJI TAP REVEAL LOGIC (P1.jpg)
+           =================================================================== */
+        const emojiCover = document.getElementById('emoji-cover');
+        const totalEmojis = 49; // 7x7 grid
+        let tappedCount = 0;
+        const targetTaps = 25;
+        const emojis = ['❤️', '😚', '🤗', '✨', '🐼'];
+        
+        // Inject Emojis into the cover
+        for (let i = 0; i < totalEmojis; i++) {
+            const emojiDiv = document.createElement('div');
+            emojiDiv.className = 'emoji';
+            emojiDiv.innerHTML = emojis[i % emojis.length]; // Cycle through emojis
+            emojiDiv.dataset.id = i;
+            emojiDiv.addEventListener('click', handleEmojiTap);
+            emojiCover.appendChild(emojiDiv);
+        }
+        const emojiElements = document.querySelectorAll('#emoji-cover .emoji');
+
+        function handleEmojiTap(event) {
+            const emojiDiv = event.target;
+            if (emojiDiv.classList.contains('revealed')) return;
+
+            emojiDiv.classList.add('revealed');
+            tappedCount++;
+
+            if (tappedCount >= targetTaps) {
+                // Reveal the rest automatically!
+                emojiElements.forEach(div => {
+                    if (!div.classList.contains('revealed')) {
+                        // Make the remaining emojis "fall"
+                        div.classList.add('fall');
+                    }
+                });
+                
+                // Hide the cover after the fall animation finishes
+                setTimeout(() => {
+                    emojiCover.style.display = 'none';
+                    checkRevealComplete();
+                }, 1500); 
+            }
+        }
+
+
+        /* ===================================================================
+           2. SCRATCH REVEAL LOGIC (P2.jpg)
+           =================================================================== */
+        const canvas = document.getElementById('scratch-canvas');
+        const ctx = canvas.getContext('2d');
+        let isDrawing = false;
+        const revealThreshold = 0.50; // Reveal when 50% is scratched
+
+        // Initial setup for the scratch coat
+        ctx.fillStyle = '#a0a0a0'; 
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Set up for transparent drawing (erasing)
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.strokeStyle = 'rgba(0,0,0,1)';
+        ctx.lineWidth = 40;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+
+        function getScratchPosition(e) {
+            const rect = canvas.getBoundingClientRect();
+            const clientX = e.clientX || e.touches[0].clientX;
+            const clientY = e.clientY || e.touches[0].clientY;
+            return {
+                x: clientX - rect.left,
+                y: clientY - rect.top
+            };
+        }
+
+        function handleScratchStart(e) {
+            isDrawing = true;
+            const pos = getScratchPosition(e);
+            ctx.beginPath();
+            ctx.moveTo(pos.x, pos.y);
+            e.preventDefault();
+        }
+
+        function handleScratchMove(e) {
+            if (!isDrawing) return;
+            const pos = getScratchPosition(e);
+            ctx.lineTo(pos.x, pos.y);
+            ctx.stroke();
+            e.preventDefault();
+        }
+
+        function handleScratchEnd() {
+            if (!isDrawing) return;
+            isDrawing = false;
+            
+            // Check revealed area only after the stroke is complete
+            checkRevealedArea();
+        }
+        
+        function checkRevealedArea() {
+            // Check every 10th pixel for transparency (alpha < 10)
+            const pixelData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+            let totalPixels = canvas.width * canvas.height;
+            let transparentPixels = 0;
+
+            for (let i = 0; i < pixelData.length; i += 4) {
+                // Check the alpha channel
+                if (pixelData[i + 3] < 10) { 
+                    transparentPixels++;
+                }
+            }
+
+            const revealedArea = transparentPixels / totalPixels;
+
+            if (revealedArea > revealThreshold) {
+                // Remove the cover completely
+                canvas.parentNode.style.opacity = 0;
+                canvas.parentNode.style.transition = 'opacity 1s';
+                
+                // Disable scratching
+                canvas.removeEventListener('mousedown', handleScratchStart);
+                canvas.removeEventListener('touchstart', handleScratchStart);
+                
+                checkRevealComplete();
+            }
+        }
+
+        canvas.addEventListener('mousedown', handleScratchStart);
+        document.addEventListener('mousemove', handleScratchMove);
+        document.addEventListener('mouseup', handleScratchEnd);
+
+        canvas.addEventListener('touchstart', handleScratchStart);
+        document.addEventListener('touchmove', handleScratchMove);
+        document.addEventListener('touchend', handleScratchEnd);
+
+
+        /* ===================================================================
+           3. RIBBON WRAP REVEAL LOGIC (P3.jpg)
+           =================================================================== */
+        const ribbonCover = document.getElementById('ribbon-cover');
+        const ribbonContent = document.querySelector('#reveal-3 .ribbon-content');
+
+        ribbonContent.addEventListener('click', () => {
+            ribbonCover.classList.add('revealed');
+            
+            // Wait for the fade-out transition to finish
+            setTimeout(() => {
+                ribbonCover.style.display = 'none';
+                checkRevealComplete();
+            }, 1000); 
+        });
+
+
+        /* ===================================================================
+           4. QUIZ SUBMISSION & NAVIGATION
+           =================================================================== */
+        const quizForm = document.getElementById('quiz-form');
+
+        quizForm.addEventListener('submit', function(event) {
+            event.preventDefault(); 
+            
+            const next_page = "page5.html"; // The next page
+            console.log(`Quiz submitted. Navigating to ${next_page}...`);
+            window.location.href = next_page;
+        });
+
+
+        /* ===================================================================
+           5. CELEBRATION EFFECTS (Confetti, Fireworks)
+           =================================================================== */
+        // Simplified Confetti/Fireworks for a quick solution using JS
+        
+        function createConfettiPiece() {
+            const c = document.createElement('div');
+            c.className = 'confetti-piece';
+            
+            // Random color
+            const colors = ['#ff69b4', '#ffd700', '#00ff7f', '#add8e6'];
+            c.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            
+            // Random size and position
+            c.style.width = Math.random() * 10 + 5 + 'px';
+            c.style.height = c.style.width;
+            c.style.position = 'absolute';
+            c.style.left = Math.random() * 100 + 'vw';
+            c.style.top = -5 + 'px'; // Start above screen
+
+            // Animation (falling)
+            c.style.animation = `fall ${Math.random() * 3 + 2}s linear infinite`;
+            c.style.transform = `rotate(${Math.random() * 360}deg)`;
+            
+            return c;
+        }
+
+        const styleSheet = document.createElement("style");
+        styleSheet.type = "text/css";
+        styleSheet.innerText = `
+            @keyframes fall {
+                to { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+            }
+            .confetti-piece {
+                border-radius: 50%;
+                z-index: 99;
+            }
+        `;
+        document.head.appendChild(styleSheet);
+
+        // Continuous light confetti effect
+        const confettiContainer = document.getElementById('confetti-container');
+        function lightConfettiStream() {
+            if (Math.random() < 0.2) { // Add a piece every so often
+                const piece = createConfettiPiece();
+                confettiContainer.appendChild(piece);
+                setTimeout(() => piece.remove(), 5000); // Remove piece after falling
+            }
+            requestAnimationFrame(lightConfettiStream);
+        }
+        lightConfettiStream(); // Start the continuous stream
+
+        // Confetti Blast function for when quiz appears
+        function createConfettiBlast(container) {
+            for (let i = 0; i < 50; i++) {
+                const piece = createConfettiPiece();
+                // Override animation for the blast effect
+                piece.style.top = '50%';
+                piece.style.left = '50%';
+                
+                const angle = Math.random() * 360;
+                const distance = Math.random() * 500;
+                
+                piece.style.transition = 'transform 1.5s ease-out, opacity 1s';
+                piece.style.transform = `translate(-50%, -50%) rotate(${angle}deg) translate(${distance}px, ${distance}px)`;
+                piece.style.opacity = 0;
+                
+                container.appendChild(piece);
+                setTimeout(() => piece.remove(), 2000);
+            }
+        }
+    </script>
+
+</body>
+</html>
