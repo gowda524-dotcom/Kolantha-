@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday!</title>
+    <title>Happy Birthday! (Music Fixed)</title>
     <style>
-        /* --- CSS Styles --- */
+        /* --- CSS Styles (Unchanged from last version, ensuring design consistency) --- */
         body {
             margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            overflow: hidden; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-color: #000; 
+            background-color: #000;
             position: relative;
-            color: #fff; 
+            color: #fff;
         }
 
         .background-image {
@@ -25,12 +25,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            /* --- UPDATED: Image reference changed to Page2.jpg --- */
-            background-image: url('Page2.jpg'); 
+            /* Image reference: Page2.jpg */
+            background-image: url('Page2.jpg');
             background-size: cover;
             background-position: center;
-            filter: brightness(0.7); 
-            z-index: -1; 
+            filter: brightness(0.7);
+            z-index: -1;
         }
 
         .content-overlay {
@@ -42,32 +42,31 @@
         }
 
         .top-emojis {
-            font-size: 2.5em; 
+            font-size: 2.5em;
             margin-bottom: 20px;
-            letter-spacing: 5px; 
+            letter-spacing: 5px;
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 10px; 
-            /* Push emojis up a bit */
-            margin-top: -100px; 
+            gap: 10px;
+            margin-top: -100px;
         }
         .top-emojis span {
-            text-shadow: 0 0 8px rgba(255, 255, 255, 0.7); 
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
         }
 
         h1 {
-            font-family: 'Brush Script MT', cursive; 
-            font-size: 4em; 
-            color: #ffe082; 
-            margin-top: 150px; 
+            font-family: 'Brush Script MT', cursive;
+            font-size: 4em;
+            color: #ffe082;
+            margin-top: 150px;
             margin-bottom: 0;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); 
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
         }
 
         .message-section {
             margin-top: 20px;
-            color: #f8bbd0; 
+            color: #f8bbd0;
             font-size: 1.5em;
             line-height: 1.4;
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
@@ -76,36 +75,36 @@
         .main-quote {
             font-weight: bold;
             font-size: 1.7em;
-            color: #fff; 
+            color: #fff;
             margin-bottom: 10px;
         }
 
         .subtitle {
             font-size: 1.2em;
             font-style: italic;
-            color: #f48fb1; 
+            color: #f48fb1;
         }
 
         /* --- Quiz Box Styles --- */
         #quiz-box {
-            display: none; 
+            display: none;
             margin-top: 40px;
             padding: 25px;
-            background-color: rgba(255, 255, 255, 0.85); 
+            background-color: rgba(255, 255, 255, 0.85);
             border-radius: 15px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
             max-width: 400px;
             width: 90%;
             margin-left: auto;
             margin-right: auto;
-            color: #333; 
+            color: #333;
         }
 
         #quiz-question {
             font-size: 1.3em;
             margin-bottom: 20px;
             font-weight: bold;
-            color: #e91e63; 
+            color: #e91e63;
         }
 
         #quiz-form {
@@ -126,7 +125,7 @@
 
         #quiz-submit {
             padding: 12px 25px;
-            background-color: #ff4081; 
+            background-color: #ff4081;
             color: white;
             border: none;
             border-radius: 8px;
@@ -137,32 +136,58 @@
         }
 
         #quiz-submit:hover {
-            background-color: #e91e63; 
-            transform: translateY(-2px); 
+            background-color: #e91e63;
+            transform: translateY(-2px);
         }
 
         #background-audio {
             display: none; /* Keep audio element hidden */
         }
-        
-        /* Social Icons have been removed */
+
+        /* --- New Styling for Click-to-Play Overlay --- */
+        #play-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000; /* Ensure it is on top of everything */
+            font-size: 1.5em;
+            cursor: pointer;
+            text-shadow: 0 0 10px #ff4081;
+            transition: opacity 0.5s ease;
+        }
+        #play-overlay p {
+            margin: 10px;
+        }
     </style>
 </head>
 <body>
+
+    <div id="play-overlay">
+        <p>Tap Anywhere to Enter and Start the Song! 🎶</p>
+        <p style="font-size: 3em;">👉</p>
+    </div>
 
     <div class="background-image"></div>
 
     <div class="content-overlay">
         <div class="top-emojis">
-            <span>💎</span><span>🦋</span><span>😊</span><span>💙</span><span>👫</span><span>🕊️</span>
+            <span>💎</span><span>🦋</span><span>🫶</span><span>😊</span><span>👫</span><span>🕊️</span>
         </div>
 
         <div class="message-section">
             <p class="main-quote">" It's my favourite person birthday "</p>
-            <p class="subtitle">~Advance Happy birthday my dear Bestest Friend🫂💙😚 ~<br>&  love youuuuh so much🫶 !</p>
+            <p class="subtitle">~ Advance Happy birthday my dear Best Friend ~<br>& I love youuuuh so much !</p>
         </div>
 
-        <h1>Happy Birthday</h1>
+        <h1>Happy Birthday My Bestest Friend 💙🫂</h1>
 
         <div id="quiz-box">
             <div id="quiz-question">
@@ -175,20 +200,42 @@
         </div>
     </div>
 
-    <audio id="background-audio" loop autoplay>
-        <source src="Page4.mp3" type="audio/mpeg">
+    <audio id="background-audio" loop>
+        <source src="Page3.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
 
     <script>
-        // --- JavaScript for Quiz Timing and Navigation ---
+        // --- JavaScript for Music Autoplay Workaround, Quiz Timing, and Navigation ---
         
         const quizBox = document.getElementById('quiz-box');
         const backgroundAudio = document.getElementById('background-audio');
+        const playOverlay = document.getElementById('play-overlay');
         
-        // --- UPDATED: Delay changed to 15 seconds (15,000 milliseconds) ---
+        // Quiz delay: 15 seconds
         const delayInMilliseconds = 15 * 1000; 
 
+        // 1. Music Autoplay Workaround
+        document.body.addEventListener('click', function startPage() {
+            // 1a. Attempt to play audio
+            backgroundAudio.play().then(() => {
+                console.log("Audio started successfully.");
+                // 1b. Hide the overlay
+                playOverlay.style.opacity = '0';
+                setTimeout(() => { playOverlay.style.display = 'none'; }, 500);
+            }).catch(e => {
+                console.log("Audio play failed, requires user interaction or permission:", e);
+                // Even if it fails, hide the overlay to let the user see the page
+                playOverlay.style.opacity = '0';
+                setTimeout(() => { playOverlay.style.display = 'none'; }, 500);
+            });
+            
+            // Remove the listener so this only runs once
+            document.body.removeEventListener('click', startPage);
+        }, { once: true });
+
+
+        // 2. Quiz Timing
         function showQuiz() {
             quizBox.style.display = 'block';
             console.log("Quiz has appeared after 15 seconds!");
@@ -197,18 +244,11 @@
         // Timer to show the quiz after 15 seconds
         setTimeout(showQuiz, delayInMilliseconds);
 
-        // Workaround for browser audio autoplay restrictions
-        document.body.addEventListener('click', () => {
-            if (backgroundAudio.paused) {
-                backgroundAudio.play().catch(e => console.log("Audio play prevented:", e));
-            }
-        }, { once: true }); 
-
-        // Quiz Form Submission Handler
+        // 3. Quiz Form Submission Handler
         const quizForm = document.getElementById('quiz-form');
 
         quizForm.addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent default form submission
+            event.preventDefault(); 
             
             // Navigate to 'page4.html'
             const next_page = "page4.html";
