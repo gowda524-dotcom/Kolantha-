@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page 4: Reveals & Celebration</title>
+    <title>Page 4: Final Reveal & Quiz</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
 
@@ -12,9 +12,9 @@
         body {
             margin: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #1a0033; /* Dark purple/blue background */
+            background-color: #1a0033;
             color: #fff;
-            overflow-x: hidden; /* Prevent horizontal scrolling */
+            overflow-x: hidden;
             text-align: center;
             padding-bottom: 50px;
         }
@@ -23,8 +23,8 @@
         #header-text {
             font-family: 'Luckiest Guy', cursive;
             font-size: 3.5em;
-            color: #ffd700; /* Gold */
-            text-shadow: 4px 4px #ff69b4; /* Pink border/shadow */
+            color: #ffd700;
+            text-shadow: 4px 4px #ff69b4;
             padding: 20px 0;
             margin: 20px auto;
             max-width: 90%;
@@ -36,30 +36,23 @@
             to { transform: scale(1.05); }
         }
 
-        /* --- Photo Container Styling (Sequential Display) --- */
-        .photo-container {
+        /* --- Photo Container Styling (Single Image) --- */
+        #reveal-1 {
             position: relative;
-            width: 80%; /* Take 80% of screen width */
-            max-width: 720px; /* Max width to prevent it from getting too big */
-            height: auto; /* Allow height to adjust naturally to image aspect ratio */
-            margin: 50px auto; /* Centered, with space above/below */
+            width: 80%;
+            max-width: 720px;
+            height: auto;
+            margin: 50px auto;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(255, 255, 255, 0.2);
             border-radius: 20px;
             overflow: hidden;
             background-color: #222;
-            display: none; /* Hidden by default, revealed sequentially */
-            transition: opacity 1s ease-in-out; /* Smooth transition when appearing */
+            display: block; /* Always visible */
         }
-        .photo-container.active {
-            display: block; /* Show when active */
-        }
-        .photo-container.fade-out {
-            opacity: 0;
-        }
-
-        .photo-container img {
+        
+        #reveal-1 img {
             width: 100%;
-            height: auto; /* Maintain aspect ratio */
+            height: auto;
             display: block;
         }
 
@@ -88,12 +81,12 @@
             font-size: 1.2em;
             font-weight: bold;
             text-shadow: 1px 1px 3px rgba(255, 105, 180, 0.5);
-            z-index: 15; /* Above covers */
+            z-index: 15;
         }
 
 
-        /* --- 1. EMOJI TAP REVEAL STYLES --- */
-        #reveal-1 .cover {
+        /* --- EMOJI TAP REVEAL STYLES --- */
+        #emoji-cover {
             position: absolute;
             top: 0;
             left: 0;
@@ -104,7 +97,7 @@
             overflow: hidden;
             z-index: 10;
         }
-        #reveal-1 .emoji {
+        #emoji-cover .emoji {
             width: calc(100% / 7); 
             height: calc(100% / 7);
             display: flex;
@@ -124,63 +117,6 @@
         .emoji.fall {
             transition: transform 1.5s ease-in, opacity 0.5s;
             transform: translateY(100vh) rotate(720deg) scale(0.1);
-            pointer-events: none;
-        }
-
-
-        /* --- 2. SCRATCH REVEAL STYLES --- */
-        #reveal-2 .cover {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 10;
-            cursor: grabbing;
-        }
-        #scratch-canvas {
-            background-color: #a0a0a0; 
-            touch-action: none; 
-        }
-         #scratch-cover.revealed-complete {
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 1s;
-         }
-
-
-        /* --- 3. RIBBON WRAP REVEAL STYLES --- */
-        #reveal-3 .ribbon {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 10;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            background-color: rgba(255, 255, 255, 0.9);
-            transition: opacity 1s;
-        }
-        #reveal-3 .ribbon-content {
-            background-color: #e57373; 
-            color: white;
-            padding: 30px;
-            border-radius: 10px;
-            font-size: 2em;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            animation: bounce 2s infinite;
-        }
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-            40% {transform: translateY(-30px);}
-            60% {transform: translateY(-15px);}
-        }
-        .ribbon.revealed {
-            opacity: 0;
             pointer-events: none;
         }
 
@@ -234,7 +170,7 @@
             transition: background-color 0.3s;
         }
 
-        /* --- Celebration Styles (for visual effect) --- */
+        /* --- Celebration Styles --- */
         .confetti {
             position: fixed;
             top: 0;
@@ -260,36 +196,15 @@
 
 
     <div id="photo-grid">
-
-        <div id="reveal-1" class="photo-container">
+        <div id="reveal-1">
             <div class="reveal-instruction">Tap 25 Emojis to Reveal the Photo!</div>
             <img src="P1.jpg" alt="Panda Image 1">
             <div id="emoji-cover" class="cover">
                 </div>
             <div class="image-caption">Ennoda Panda🐼</div>
         </div>
-
-        <div id="reveal-2" class="photo-container">
-            <div class="reveal-instruction">Scratch the Grey Area to Reveal!</div>
-            <img src="P2.jpg" alt="Panda Image 2">
-            <div id="scratch-cover" class="cover">
-                <canvas id="scratch-canvas"></canvas> 
-            </div>
-            <div class="image-caption">Azhagu Kannam😚🙈</div>
-        </div>
-
-        <div id="reveal-3" class="photo-container">
-            <div class="reveal-instruction">Click the Gift to Unwrap!</div>
-            <img src="P3.jpg" alt="Panda Image 3">
-            <div id="ribbon-cover" class="ribbon">
-                <div class="ribbon-content">
-                    Click the Gift! 🎁
-                </div>
-            </div>
-            <div class="image-caption">Cute panda🤗</div>
-        </div>
-
     </div>
+
     <div id="final-quiz">
         <div id="quiz-question">Lov uuu 😚🫂 always panda 🐼</div>
         <form id="quiz-form">
@@ -299,89 +214,45 @@
     </div>
 
     <script>
-        // --- Global State and Counters ---
-        let revealedCount = 0;
-        const totalPhotos = 3;
+        // --- Global State ---
         const quizBox = document.getElementById('final-quiz');
         const backgroundAudio = document.getElementById('background-audio');
-        const photoContainers = document.querySelectorAll('.photo-container');
-        let currentPhotoIndex = 0;
+        const revealContainer = document.getElementById('reveal-1');
 
-        // Function to show the next photo or final quiz
-        function showNextPhotoOrQuiz() {
-            // Introduce a delay to slow down the flow and make transitions clearer
-            const transitionDelay = 1500; // 1.5 seconds delay
 
-            // 1. Hide the current photo container if one was just revealed
-            if (currentPhotoIndex > 0 && currentPhotoIndex <= totalPhotos) {
-                const prevContainer = photoContainers[currentPhotoIndex - 1];
-                prevContainer.classList.add('fade-out');
-                setTimeout(() => {
-                    prevContainer.style.display = 'none';
-                    prevContainer.classList.remove('fade-out');
-                }, 1000); // Wait for the 1s fade-out transition
-            }
-            
-            // Wait for the transition delay before showing the next item
+        // Function to show the final quiz after the reveal is complete
+        function showFinalQuiz() {
+            // Fade out the image container
+            revealContainer.style.opacity = 0;
             setTimeout(() => {
-                if (currentPhotoIndex < photoContainers.length) {
-                    // 2. Show the next photo
-                    const nextContainer = photoContainers[currentPhotoIndex];
-                    nextContainer.style.display = 'block';
-                    nextContainer.classList.add('active');
+                revealContainer.style.display = 'none';
 
-                    // Special handling for canvas to set its dimensions after container is visible
-                    if (nextContainer.id === 'reveal-2') {
-                        const img = nextContainer.querySelector('img');
-                        const canvas = document.getElementById('scratch-canvas');
-                        if (img.complete) {
-                            setCanvasDimensions(img, canvas);
-                        } else {
-                            img.onload = () => setCanvasDimensions(img, canvas);
-                        }
-                    }
-                    currentPhotoIndex++;
-                }
-
-                if (revealedCount === totalPhotos) {
-                    // 3. All photos revealed, show quiz
-                    quizBox.style.display = 'block';
-                    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-                    createConfettiBlast(document.getElementById('confetti-container'));
-                }
-            }, currentPhotoIndex === 0 ? 0 : transitionDelay); // No delay for the first photo
+                // Show quiz
+                quizBox.style.display = 'block';
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                createConfettiBlast(document.getElementById('confetti-container'));
+            }, 1000); // Wait for fade-out
         }
 
-        // --- Initial Load: Show first photo ---
+        // --- Initial Load ---
         document.addEventListener('DOMContentLoaded', () => {
-            showNextPhotoOrQuiz();
+            // Attempt to play audio immediately
             backgroundAudio.play().catch(e => console.warn("Audio autoplay blocked by browser:", e));
+            // Set up a fade-out transition for the image container
+            revealContainer.style.transition = 'opacity 1s ease-in-out';
         });
         
-        // --- Utility to set canvas dimensions based on image ---
-        function setCanvasDimensions(img, canvas) {
-            canvas.width = img.clientWidth;
-            canvas.height = img.clientHeight;
-            const ctx = canvas.getContext('2d');
-            ctx.fillStyle = '#a0a0a0'; 
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.globalCompositeOperation = 'destination-out';
-            ctx.strokeStyle = 'rgba(0,0,0,1)';
-            ctx.lineWidth = 40;
-            ctx.lineCap = 'round';
-            ctx.lineJoin = 'round';
-        }
-
-
+        
         /* ===================================================================
            1. EMOJI TAP REVEAL LOGIC (P1.jpg)
            =================================================================== */
         const emojiCover = document.getElementById('emoji-cover');
-        const totalEmojis = 49; 
+        const totalEmojis = 49; // 7x7 grid
         let tappedCount = 0;
         const targetTaps = 25;
         const emojis = ['❤️', '😚', '🤗', '✨', '🐼'];
         
+        // Inject Emojis into the cover
         for (let i = 0; i < totalEmojis; i++) {
             const emojiDiv = document.createElement('div');
             emojiDiv.className = 'emoji';
@@ -400,128 +271,24 @@
             tappedCount++;
 
             if (tappedCount >= targetTaps) {
+                // Make remaining emojis fall
                 emojiElements.forEach(div => {
                     if (!div.classList.contains('revealed')) {
                         div.classList.add('fall');
                     }
                 });
                 
+                // Wait for fall animation to finish, then show the quiz
                 setTimeout(() => {
                     emojiCover.style.display = 'none';
-                    revealedCount++;
-                    showNextPhotoOrQuiz(); // Reveal next image after a pause
-                }, 1500); // Matches the fall animation time for smoothness
+                    showFinalQuiz();
+                }, 1500); 
             }
         }
 
 
         /* ===================================================================
-           2. SCRATCH REVEAL LOGIC (P2.jpg) - FIXED
-           =================================================================== */
-        const scratchCanvas = document.getElementById('scratch-canvas');
-        const scratchCtx = scratchCanvas.getContext('2d');
-        const scratchCover = document.getElementById('scratch-cover');
-        let isScratching = false;
-        const scratchRevealThreshold = 0.50; 
-
-        function getScratchPosition(e) {
-            const rect = scratchCanvas.getBoundingClientRect();
-            const clientX = e.clientX || e.touches[0].clientX;
-            const clientY = e.clientY || e.touches[0].clientY;
-            return {
-                x: clientX - rect.left,
-                y: clientY - rect.top
-            };
-        }
-
-        function handleScratchStart(e) {
-            if (scratchCover.classList.contains('revealed-complete')) return;
-            isScratching = true;
-            const pos = getScratchPosition(e);
-            scratchCtx.beginPath();
-            scratchCtx.moveTo(pos.x, pos.y);
-            e.preventDefault();
-        }
-
-        function handleScratchMove(e) {
-            if (!isScratching || scratchCover.classList.contains('revealed-complete')) return;
-            const pos = getScratchPosition(e);
-            scratchCtx.lineTo(pos.x, pos.y);
-            scratchCtx.stroke();
-            e.preventDefault();
-            // Removed checkScratchRevealedArea here: Checking on move makes it too sensitive.
-        }
-
-        function handleScratchEnd() {
-            if (!isScratching || scratchCover.classList.contains('revealed-complete')) return;
-            isScratching = false;
-            checkScratchRevealedArea(); // NOW we check the area!
-        }
-        
-        function checkScratchRevealedArea() {
-            const pixelData = scratchCtx.getImageData(0, 0, scratchCanvas.width, scratchCanvas.height).data;
-            let totalPixels = scratchCanvas.width * scratchCanvas.height;
-            let transparentPixels = 0;
-
-            for (let i = 0; i < pixelData.length; i += 4) {
-                if (pixelData[i + 3] < 10) { 
-                    transparentPixels++;
-                }
-            }
-
-            const revealedArea = transparentPixels / totalPixels;
-
-            if (revealedArea > scratchRevealThreshold) {
-                scratchCover.classList.add('revealed-complete'); 
-                
-                // Disable scratching listeners immediately
-                scratchCanvas.removeEventListener('mousedown', handleScratchStart);
-                document.removeEventListener('mousemove', handleScratchMove);
-                document.removeEventListener('mouseup', handleScratchEnd);
-                scratchCanvas.removeEventListener('touchstart', handleScratchStart);
-                document.removeEventListener('touchmove', handleScratchMove);
-                document.removeEventListener('touchend', handleScratchEnd);
-
-                // Wait for fade out, then show next photo
-                setTimeout(() => {
-                    scratchCover.style.display = 'none';
-                    revealedCount++;
-                    showNextPhotoOrQuiz(); 
-                }, 1000); 
-            }
-        }
-
-        // Attach scratch listeners
-        scratchCanvas.addEventListener('mousedown', handleScratchStart);
-        document.addEventListener('mousemove', handleScratchMove);
-        document.addEventListener('mouseup', handleScratchEnd);
-
-        scratchCanvas.addEventListener('touchstart', handleScratchStart);
-        document.addEventListener('touchmove', handleScratchMove);
-        document.addEventListener('touchend', handleScratchEnd);
-
-
-        /* ===================================================================
-           3. RIBBON WRAP REVEAL LOGIC (P3.jpg)
-           =================================================================== */
-        const ribbonCover = document.getElementById('ribbon-cover');
-        const ribbonContent = document.querySelector('#reveal-3 .ribbon-content');
-
-        ribbonContent.addEventListener('click', () => {
-            if (ribbonCover.classList.contains('revealed')) return;
-
-            ribbonCover.classList.add('revealed');
-            
-            setTimeout(() => {
-                ribbonCover.style.display = 'none';
-                revealedCount++;
-                showNextPhotoOrQuiz(); 
-            }, 1000); 
-        });
-
-
-        /* ===================================================================
-           4. QUIZ SUBMISSION & NAVIGATION
+           2. QUIZ SUBMISSION & NAVIGATION
            =================================================================== */
         const quizForm = document.getElementById('quiz-form');
 
@@ -534,13 +301,13 @@
 
 
         /* ===================================================================
-           5. CELEBRATION EFFECTS 
+           3. CELEBRATION EFFECTS 
            =================================================================== */
         function createConfettiPiece() {
             const c = document.createElement('div');
             c.className = 'confetti-piece';
             
-            const colors = ['#ff69b4', '#ffd700', '#00ff7f', '#add8e6', '#ff0000', '#0000ff']; 
+            const colors = ['#ff69b4', '#ffd700', '#00ff7f', '#add8e6', '#ff0000', '#0000ff'];
             c.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
             
             c.style.width = Math.random() * 10 + 5 + 'px';
